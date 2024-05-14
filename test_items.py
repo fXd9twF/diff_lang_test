@@ -1,16 +1,12 @@
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import Select
+import time
+
 from selenium.webdriver.common.by import By
 
+link = 'http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/'
 
-
-def test_guest_should_see_basket(browser, language):
-    link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
+def test_should_see_button_add_to_basket(browser):
     browser.get(link)
-    select = Select(browser.find_element(By.CSS_SELECTOR, "#language_selector > div > select"))
-    select.select_by_value(language)
-    browser.find_element(By.CSS_SELECTOR, "#language_selector > button").click()
-    cart_button = WebDriverWait(browser, 10).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, "#add_to_basket_form > button")))
-    assert cart_button is not None, "cart_button has not been found"
+    time.sleep(5)
+    buttons = browser.find_elements(By.CLASS_NAME, 'btn-add-to-basket')
+    assert len(buttons) > 0, 'Кнопка "Добавить в корзину" не найдена'
+    assert len(buttons) < 2, 'Найдено больше одной кнопки'
